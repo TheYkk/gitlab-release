@@ -7,8 +7,10 @@ from distutils.version import LooseVersion
 from urllib.parse import urljoin, quote_plus
 import requests
 
+
 class GitlabReleaseError(RuntimeError):
     pass
+
 
 class GitlabRelease:
     def __init__(self, debug=False):
@@ -39,7 +41,7 @@ class GitlabRelease:
         env = {
             'CI_PROJECT_URL': '',
             'CI_PROJECT_ID': '',
-            'GITLAB_ACCESS_TOKEN': "You must specifiy the private token linked to your GitLab account.\n"
+            'GITLAB_ACCESS_TOKEN': "You must specify the private token linked to your GitLab account.\n"
                                    'You probably need to add a GITLAB_ACCESS_TOKEN variable to your project.',
         }
         for var, msg in env.items():
@@ -65,7 +67,6 @@ class GitlabRelease:
         method = 'put' if update else 'post'
         res = self.request(method, url, headers=headers, json=body)
         return res.json()
-
 
     def fetch_release(self):
         url = '/'.join((self.api_project_url, 'repository/tags', self.get_tag()))
@@ -119,7 +120,7 @@ build:
             - compiled-$CI_BUILD_TAG.exe
             - doc-$CI_BUILD_TAG.pdf
 publish:
-    image: inetprocess/gitlab-release
+    image: theykk/gitlab-release:v1
     stage: publish
     only:
         - tags
@@ -127,7 +128,7 @@ publish:
         - gitlab-release compiled-$CI_BUILD_TAG.exe doc-$CI_BUILD_TAG.pdf
 ```
 
-### 2. Generate a personnal access token
+### 2. Generate a personal access token
 Generate a new [Personal Access Token]
 (https://docs.gitlab.com/ee/api/README.html#personal-access-tokens)
 from your user profile.
@@ -137,7 +138,7 @@ Set a [secret variable](https://docs.gitlab.com/ce/ci/variables/#secret-variable
 in your project named `GITLAB_ACCESS_TOKEN` with the token you have generated in
 the previous step.
 '''
-    )
+                                     )
     parser.add_argument('-m', '--message', default='',
                         help='Markdown message before the files list in the release note')
     parser.add_argument('files', nargs='*',

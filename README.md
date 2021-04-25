@@ -23,7 +23,7 @@ build:
             - compiled-$CI_BUILD_TAG.exe
             - doc-$CI_BUILD_TAG.pdf
 publish:
-    image: inetprocess/gitlab-release
+    image: theykk/gitlab-release
     stage: publish
     only:
         - tags
